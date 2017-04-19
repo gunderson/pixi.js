@@ -1,4 +1,4 @@
-precision mediump float;
+precision highp float;
 
 varying vec2 vTextureCoord;
 varying vec4 vColor;
@@ -15,7 +15,7 @@ void main()
 {
     vec4 color = texture2D(uSampler, vTextureCoord);
 
-    float diff = (rand(vTextureCoord) - 0.5) * noise;
+    float diff = (rand(gl_FragCoord.xy) - 0.5) * noise;
 
     color.r += diff;
     color.g += diff;

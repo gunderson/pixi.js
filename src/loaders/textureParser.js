@@ -1,17 +1,19 @@
-var core = require('../core');
+import { Resource } from 'resource-loader';
+import Texture from '../core/textures/Texture';
 
-module.exports = function ()
+export default function ()
 {
-    return function (resource, next)
+    return function textureParser(resource, next)
     {
         // create a new texture if the data is an Image object
-        if (resource.data && resource.isImage)
+        if (resource.data && resource.type === Resource.TYPE.IMAGE)
         {
-            resource.texture = new core.Texture(new core.BaseTexture(resource.data, null, core.utils.getResolutionOfUrl(resource.url)));
-            // lets also add the frame to pixi's global cache for fromFrame and fromImage fucntions
-            core.utils.TextureCache[resource.url] = resource.texture;
+            resource.texture = Texture.fromLoader(
+                resource.data,
+                resource.url,
+                resource.name
+            );
         }
-
         next();
     };
-};
+}
